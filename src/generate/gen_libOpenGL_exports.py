@@ -39,9 +39,11 @@ def _main():
     xmlFiles = sys.argv[2:]
     roots = [ etree.parse(filename).getroot() for filename in xmlFiles ]
 
+    print("{ global:")
     names = genCommon.getExportNamesFromRoots(target, roots)
     for name in sorted(names):
-        print(name)
+        print(name, ";")
+    print("local: *; };")
 
 if (__name__ == "__main__"):
     _main()
