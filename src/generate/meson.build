@@ -12,6 +12,7 @@ glapi_mapi_dep = declare_dependency(
     sources : glapi_mapi_gen,
 )
 
+# opengl
 glapi_mapi_opengl_gen = custom_target('glapi_mapi_opengl_tmp.h',
     command : [gen_mapi_script, 'opengl', glapi_gen_gl_xml],
     capture : true,
@@ -20,6 +21,17 @@ glapi_mapi_opengl_gen = custom_target('glapi_mapi_opengl_tmp.h',
 )
 glapi_mapi_opengl_dep = declare_dependency(
     sources : glapi_mapi_opengl_gen,
+)
+
+# gl
+glapi_mapi_gl_gen = custom_target('glapi_mapi_gl_tmp.h',
+    command : [gen_mapi_script, 'gl', glapi_gen_gl_xml],
+    capture : true,
+    depend_files : files('genCommon.py') + glapi_gen_gl_xml,
+    output : 'glapi_mapi_gl_tmp.h',
+)
+glapi_mapi_gl_dep = declare_dependency(
+    sources : glapi_mapi_gl_gen,
 )
 
 glapi_gen_libglglxstubs_script = find_program('gen_libgl_glxstubs.py')

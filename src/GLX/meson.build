@@ -22,3 +22,5 @@ glx = shared_library('GLX',
     version : '0.0.0',
     install : true,
 )
+
+glx_dep = declare_dependency(link_with : glx)
