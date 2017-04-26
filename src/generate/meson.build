@@ -1,5 +1,6 @@
 gen_mapi_script = find_program('gen_gldispatch_mapi.py')
-glapi_gen_gl_xml = files('xml/gl.xml', 'xml/gl_other.xml')
+glapi_gen_gl_core_xml = files('xml/gl.xml')
+glapi_gen_gl_xml = glapi_gen_gl_core_xml + files('xml/gl_other.xml')
 
 glapi_mapi_gen = custom_target('glapi_mapi_tmp.h',
     command : [gen_mapi_script, 'gldispatch', glapi_gen_gl_xml],
@@ -34,9 +35,6 @@ libglglxwrapper_dep = declare_dependency(
 )
 
 glapi_gen_libopengl_exports_script = find_program('gen_libOpenGL_exports.py')
-# TODO: Unify file lists at the top of the file
-# TODO: Depend on the script itself
-glapi_gen_gl_core_xml = files('xml/gl.xml')
 g_opengl_exports_sym = custom_target('g_opengl_exports.sym',
     command : [glapi_gen_libopengl_exports_script, 'opengl', glapi_gen_gl_core_xml],
     capture : true,
