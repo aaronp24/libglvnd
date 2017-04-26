@@ -6,16 +6,9 @@ glx_src = [
     'libglxproto.c',
 ]
 
-# TODO: Should these be in a config.h?
-glx_c_args = [
-    '-DHAVE_SYNC_INTRINSICS',
-    '-DUSE_X86_64_ASM',
-]
-
 glx = shared_library('GLX',
     sources : glx_src,
     include_directories: [inc, util_inc],
-    c_args : glx_c_args,
     dependencies : [
         gldispatch_dep,
         glvnd_genentry_dep,

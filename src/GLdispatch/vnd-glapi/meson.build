@@ -25,7 +25,10 @@ glapi = static_library('glapi',
 glapi_opengl = static_library('glapi_opengl',
     sources : [entry_src, 'stub.c'],
     include_directories : [inc, util_inc],
-    c_args : '-DMAPI_ABI_HEADER="glapi_mapi_opengl_tmp.h"',
+    c_args : [
+        '-DMAPI_ABI_HEADER="glapi_mapi_opengl_tmp.h"',
+        '-DSTATIC_DISPATCH_ONLY',
+    ],
     dependencies : [
         glapi_mapi_opengl_dep,
         utils_misc_dep,
