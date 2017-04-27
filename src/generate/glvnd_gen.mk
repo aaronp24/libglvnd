@@ -38,7 +38,7 @@ endef
 # Generates an export list for an entrypoint library.
 # $(1) specifies which library we're building, using the same names as
 # glapi_gen_mapi.
-glapi_gen_libopengl_exports_script := $(top_srcdir)/src/generate/gen_libOpenGL_exports.py
+glapi_gen_libopengl_exports_script := $(top_srcdir)/src/generate/gen_libOpenGL_exports_old.py
 glapi_gen_libopengl_exports_deps := \
 	$(glapi_gen_libopengl_exports_script) \
 	$(glapi_gen_gl_deps)
