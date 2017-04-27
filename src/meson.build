@@ -16,6 +16,8 @@ foreach d : c_defines
   add_global_arguments('-D' + d + '=1', language : 'c')
 endforeach
 
+add_global_link_arguments('-Wl,-Bsymbolic', language : 'c')
+
 subdir('generate')
 subdir('util')
 subdir('GLdispatch')
