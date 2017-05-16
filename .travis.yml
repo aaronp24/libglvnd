@@ -1,0 +1,21 @@
+sudo: false
+
+os:
+  - linux
+
+language:
+  - c
+
+services:
+  - docker
+
+before_install:
+  - docker pull jpakkane/mesonci:zesty
+
+script:
+  - echo FROM jpakkane/mesonci:zesty > Dockerfile
+  # HACK: Install meson from git because of https://github.com/mesonbuild/meson/issues/1172"
+  - echo RUN pip3 install git+https://github.com/mesonbuild/meson >> Dockerfile
+  - echo ADD . /root >> Dockerfile
+  - docker build -t withgit .;
+  - docker run withgit /bin/sh -c "cd /root && TRAVIS=true CC=$CC meson build && ninja -C build test"
