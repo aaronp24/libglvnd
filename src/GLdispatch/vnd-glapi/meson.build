@@ -1,6 +1,6 @@
 entry_src = [
     'entry_x86_64_tls.c',
-    'entry_x86_64_common.c',
+    'entry_simple_asm.c',
     'entry_common.c',
 ]
 
