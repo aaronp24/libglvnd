@@ -1,6 +1,8 @@
 libglvnd: the GL Vendor-Neutral Dispatch library
 ================================================
 
+[![Travis](https://travis-ci.org/aaronp24/libglvnd.svg?branch=meson)](https://travis-ci.org/aaronp24/libglvnd)
+
 Introduction
 ------------
 
