@@ -47,3 +47,17 @@ glapi_opengl = static_library('glapi_opengl',
         utils_misc_dep,
     ],
 )
+
+# TODO: Abstract STATIC_DISPATCH_ONLY
+glapi_glesv1 = static_library('glapi_glesv1',
+    sources : [entry_src, 'stub.c'],
+    include_directories : [inc, util_inc],
+    c_args : [
+        '-DMAPI_ABI_HEADER="glapi_mapi_glesv1_tmp.h"',
+        '-DSTATIC_DISPATCH_ONLY',
+    ],
+    dependencies : [
+        glapi_mapi_glesv1_dep,
+        utils_misc_dep,
+    ],
+)
