@@ -128,5 +128,4 @@ egl_dispatch_stubs = static_library('EGL_dispatch_stubs',
     include_directories : [inc, egl_inc, egl_dispatch_stubs_inc],
     sources : g_egldispatchstubs_h,
 )
-egl_dispatch_stubs_dep = declare_dependency(link_with : egl_dispatch_stubs,
-    depend_files : g_egldispatchstubs_h)
+egl_dispatch_stubs_dep = declare_dependency(link_with : egl_dispatch_stubs)
