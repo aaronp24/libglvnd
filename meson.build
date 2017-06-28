@@ -6,6 +6,7 @@ datadir = join_paths(get_option('prefix'), get_option('datadir'))
 sysconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'))
 
 subdir('src')
+subdir('include')
 
 import('pkgconfig').generate(
     name : 'libglvnd',
