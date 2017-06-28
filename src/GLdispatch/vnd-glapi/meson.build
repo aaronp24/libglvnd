@@ -61,3 +61,16 @@ glapi_glesv1 = static_library('glapi_glesv1',
         utils_misc_dep,
     ],
 )
+
+glapi_glesv2 = static_library('glapi_glesv2',
+    sources : [entry_src, 'stub.c'],
+    include_directories : [inc, util_inc],
+    c_args : [
+        '-DMAPI_ABI_HEADER="glapi_mapi_glesv2_tmp.h"',
+        '-DSTATIC_DISPATCH_ONLY',
+    ],
+    dependencies : [
+        glapi_mapi_glesv2_dep,
+        utils_misc_dep,
+    ],
+)
