@@ -57,3 +57,32 @@ g_opengl_exports_sym_dep = declare_dependency(
     sources : g_opengl_exports_sym,
     link_args : '-Wl,--version-script,@0@'.format(g_opengl_exports_sym.full_path()),
 )
+
+# EGL_dispatch_stubs
+# TODO: Move egldispatchstubs.h to here
+egl_inc = include_directories('../EGL')
+egl_gen_dispatch_script = find_program('gen_egl_dispatch.py')
+egl_gen_files = files('eglFunctionList.py', 'xml/egl.xml')
+g_egldispatchstubs_c = custom_target('g_egldispatchstubs.c',
+    command : [egl_gen_dispatch_script, 'source', egl_gen_files],
+    capture : true,
+    depend_files : files('gen_egl_dispatch.py') + egl_gen_files,
+    output : 'g_egldispatchstubs.c',
+)
+g_egldispatchstubs_h = custom_target('g_egldispatchstubs.h',
+    command : [egl_gen_dispatch_script, 'header', egl_gen_files],
+    capture : true,
+    depend_files : files('gen_egl_dispatch.py') + egl_gen_files,
+    output : 'g_egldispatchstubs.h',
+)
+egl_dispatch_stubs_inc = include_directories(meson.current_build_dir())
+egl_dispatch_stubs = static_library('EGL_dispatch_stubs',
+    [
+        '../EGL/egldispatchstubs.c',
+        g_egldispatchstubs_c,
+    ],
+    include_directories : [inc, egl_inc, egl_dispatch_stubs_inc],
+    sources : g_egldispatchstubs_h,
+)
+egl_dispatch_stubs_dep = declare_dependency(link_with : egl_dispatch_stubs,
+    depend_files : g_egldispatchstubs_h)

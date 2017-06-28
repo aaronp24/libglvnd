@@ -3,6 +3,7 @@ project('libglvnd', 'c')
 inc = include_directories('include')
 
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
+sysconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'))
 
 subdir('src')
 

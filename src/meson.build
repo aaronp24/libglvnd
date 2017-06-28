@@ -1,5 +1,6 @@
 cc =meson.get_compiler('c')
 libdl = cc.find_library('libdl')
+libm = cc.find_library('libm')
 
 # TODO: Handle these dynamically
 c_defines = [

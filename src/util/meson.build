@@ -8,6 +8,13 @@ app_error_check_dep = declare_dependency(
     include_directories : util_inc,
 )
 
+cJSON = static_library('cJSON', 'cJSON.c',
+    c_args : '-Wno-misleading-indentation',
+)
+cJSON_dep = declare_dependency(
+    link_with : cJSON,
+)
+
 glvnd_genentry = static_library('libglvnd_genentry', 'glvnd_genentry.c')
 glvnd_genentry_dep = declare_dependency(
     link_with : glvnd_genentry,
