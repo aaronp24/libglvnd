@@ -119,13 +119,12 @@ g_egldispatchstubs_h = custom_target('g_egldispatchstubs.h',
     depend_files : files('gen_egl_dispatch.py') + egl_gen_files,
     output : 'g_egldispatchstubs.h',
 )
-egl_dispatch_stubs_inc = include_directories(meson.current_build_dir())
 egl_dispatch_stubs = static_library('EGL_dispatch_stubs',
     [
         '../EGL/egldispatchstubs.c',
         g_egldispatchstubs_c,
     ],
-    include_directories : [inc, egl_inc, egl_dispatch_stubs_inc],
+    include_directories : [inc, egl_inc],
     sources : g_egldispatchstubs_h,
 )
 egl_dispatch_stubs_dep = declare_dependency(link_with : egl_dispatch_stubs)
