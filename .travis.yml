@@ -14,7 +14,7 @@ before_install:
 
 script:
   - echo FROM base/archlinux > Dockerfile
-  - echo RUN pacman --noconfirm -Sy gcc glproto libx11 libxext pkg-config automake autoconf libtool make >> Dockerfile
+  - echo RUN pacman --noconfirm -Sy gcc glproto libx11 libxext pkg-config automake autoconf libtool make python >> Dockerfile
   - echo ADD . /root >> Dockerfile
   - docker build -t withgit .;
   - docker run withgit /bin/sh -c "cd /root && TRAVIS=true CC=$CC ./autogen.sh && mkdir build && cd build && ../configure && make -j`nproc`"
