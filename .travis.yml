@@ -6,6 +6,9 @@ os:
 language:
   - c
 
+cache:
+  - ccache
+
 services:
   - docker
 
@@ -13,4 +16,4 @@ script:
   - echo FROM aplattner/arch-glvnd-meson:v1 > Dockerfile
   - echo ADD . /root >> Dockerfile
   - docker build -t withgit .;
-  - docker run withgit /bin/sh -c "cd /root && TRAVIS=true CC=$CC meson build && ninja -C build test"
+  - docker run --volume $HOME/.ccache:/root/.ccache withgit /bin/sh -c "cd /root && TRAVIS=true CC=$CC meson build && ninja -C build test"
