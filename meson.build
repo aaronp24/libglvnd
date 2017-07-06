@@ -1,5 +1,9 @@
 project('libglvnd', 'c')
 
+glproto_dep = dependency('glproto', required : true)
+x11_dep = dependency('x11', required : true)
+xext_dep = dependency('xext', required : true)
+
 inc = include_directories('include')
 
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
