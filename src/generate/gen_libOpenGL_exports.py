@@ -42,7 +42,8 @@ def _main():
     print("{ global:")
     names = genCommon.getExportNamesFromRoots(target, roots)
     for name in sorted(names):
-        print(name, ";")
+        print(name)
+        print(";")
     print("local: *; };")
 
 if (__name__ == "__main__"):
