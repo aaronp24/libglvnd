@@ -1,4 +1,4 @@
-project('libglvnd', 'c')
+project('libglvnd', 'c', meson_version : '>=0.41')
 
 glproto_dep = dependency('glproto', required : true)
 x11_dep = dependency('x11', required : true)
