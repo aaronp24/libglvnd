@@ -8,9 +8,7 @@ app_error_check_dep = declare_dependency(
     include_directories : util_inc,
 )
 
-cJSON = static_library('cJSON', 'cJSON.c',
-    c_args : '-Wno-misleading-indentation',
-)
+cJSON = static_library('cJSON', 'cJSON.c')
 cJSON_dep = declare_dependency(
     link_with : cJSON,
 )
