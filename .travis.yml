@@ -13,7 +13,7 @@ services:
   - docker
 
 script:
-  - echo FROM aplattner/arch-glvnd-meson:v2 > Dockerfile
+  - echo FROM aplattner/arch-glvnd-meson:v3 > Dockerfile
   - echo ADD . /root >> Dockerfile
   - docker build -t withgit .;
-  - docker run --volume $HOME/.ccache:/root/.ccache withgit /bin/sh -c "Xvfb :3 & cd /root && TRAVIS=true CC=$CC meson build && DISPLAY=:3 ninja -C build test"
+  - docker run --volume $HOME/.ccache:/root/.ccache withgit /bin/sh -c "Xvfb :3 & cd /root && TRAVIS=true CC=$CC LANG=$LANG meson build && LANG=$LANG DISPLAY=:3 ninja -C build test"
