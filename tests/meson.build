@@ -21,6 +21,13 @@ gldispatch = executable('testgldispatch', 'testgldispatch.c',
     link_with : [opengl, gldispatch, libpatchentrypoints],
 )
 
+glxcreatecontext_src = files('testglxcreatecontext.c', 'test_utils.c')
+glxcreatecontext = executable('testglxcreatecontext', glxcreatecontext_src,
+    include_directories : inc,
+    dependencies : [x11_dep, glvnd_pthread_dep, libdl],
+    link_with : [glx, opengl],
+)
+
 glxmakecurrent_src = files('testglxmakecurrent.c', 'test_utils.c')
 glxmakecurrent = executable('testglxmakecurrent', glxmakecurrent_src,
     include_directories : inc,
@@ -102,6 +109,7 @@ egldebug = executable('testegldebug', 'testegldebug.c',
 test('gldispatch_static',          gldispatch,               args : ['-s'],                        env : env)
 test('gldispatch_generated',       gldispatch,               args : ['-g'],                        env : env)
 test('gldispatch_patched',         gldispatch,               args : ['-s', '-g', '-p'],            env : env)
+test('glxcreatecontext',           glxcreatecontext,                                               env : glx_env)
 test('glxmcbasic',                 glxmakecurrent,           args : ['-t', '1', '-i', '1'],        env : glx_env)
 test('glxmcloop',                  glxmakecurrent,           args : ['-t', '1', '-i', '250'],      env : glx_env)
 test('glxmcthreads',               glxmakecurrent,           args : ['-t', '5', '-i', '20000'],    env : glx_threads)
