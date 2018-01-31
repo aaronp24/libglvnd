@@ -23,6 +23,6 @@ egl = shared_library('EGL',
     ],
     include_directories : [inc, util_inc],
     sources : g_egldispatchstubs_h,
-    version : '1.0.0',
+    version : '1.1.0',
     install : true,
 )

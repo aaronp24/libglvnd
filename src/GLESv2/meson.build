@@ -10,6 +10,6 @@ glesv2 = shared_library('GLESv2', opengl_main_src,
         gldispatch_dep,
         g_glesv2_exports_sym_dep,
     ],
-    version : '2.0.0',
+    version : '2.1.0',
     install : true,
 )

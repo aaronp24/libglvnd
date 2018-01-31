@@ -12,6 +12,6 @@ gl = shared_library('GL',
         x11_dep,
     ],
     include_directories : [inc, glx_inc, util_inc],
-    version : '1.0.0',
+    version : '1.7.0',
     install : true,
 )
