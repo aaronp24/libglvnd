@@ -34,5 +34,7 @@ if get_option('glx')
   subdir('GL')
 endif
 
-subdir('GLESv1')
-subdir('GLESv2')
+if get_option('gles')
+  subdir('GLESv1')
+  subdir('GLESv2')
+endif
