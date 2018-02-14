@@ -24,7 +24,11 @@ subdir('generate')
 subdir('util')
 subdir('GLdispatch')
 subdir('OpenGL')
-subdir('EGL')
+
+if get_option('egl')
+  subdir('EGL')
+endif
+
 subdir('GLX')
 subdir('GL')
 subdir('GLESv1')

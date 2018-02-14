@@ -66,45 +66,47 @@ patchentrypoints = executable('patchentrypoints',
     link_with: [glx, opengl],
 )
 
-egl_test_utils = static_library('egl_test_utils', 'egl_test_utils.c',
-    include_directories : inc,
-)
+if get_option('egl')
+  egl_test_utils = static_library('egl_test_utils', 'egl_test_utils.c',
+      include_directories : inc,
+  )
 
-egldisplay = executable('testegldisplay', 'testegldisplay.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : [egl, egl_test_utils],
-)
+  egldisplay = executable('testegldisplay', 'testegldisplay.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : [egl, egl_test_utils],
+  )
 
-egldevice = executable('testegldevice', 'testegldevice.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : [egl, egl_test_utils],
-)
+  egldevice = executable('testegldevice', 'testegldevice.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : [egl, egl_test_utils],
+  )
 
-eglgetprocaddress = executable('testeglgetprocaddress', 'testeglgetprocaddress.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : [egl, egl_test_utils],
-)
+  eglgetprocaddress = executable('testeglgetprocaddress', 'testeglgetprocaddress.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : [egl, egl_test_utils],
+  )
 
-eglmakecurrent = executable('testeglmakecurrent', 'testeglmakecurrent.c',
-    include_directories : [inc, util_inc],
-    dependencies : x11_dep,
-    link_with : [egl, opengl, egl_test_utils],
-)
+  eglmakecurrent = executable('testeglmakecurrent', 'testeglmakecurrent.c',
+      include_directories : [inc, util_inc],
+      dependencies : x11_dep,
+      link_with : [egl, opengl, egl_test_utils],
+  )
 
-eglerror = executable('testeglerror', 'testeglerror.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : [egl, egl_test_utils],
-)
+  eglerror = executable('testeglerror', 'testeglerror.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : [egl, egl_test_utils],
+  )
 
-egldebug = executable('testegldebug', 'testegldebug.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : [egl, egl_test_utils],
-)
+  egldebug = executable('testegldebug', 'testegldebug.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : [egl, egl_test_utils],
+  )
+endif
 
 test('gldispatch_static',          gldispatch,               args : ['-s'],                        env : env)
 test('gldispatch_generated',       gldispatch,               args : ['-g'],                        env : env)
@@ -120,9 +122,12 @@ test('glxgetprocaddress_genentry', glxgetprocaddress,                           
 test('glxgetclientstr',            glxgetclientstr,                                                env : glx_env)
 test('glxqueryversion',            glxqueryversion,                                                env : glx_env)
 test('patchentrypoints',           patchentrypoints,                                               env : glx_patch)
-test('egldisplay',                 egldisplay,                                                     env : egl_env)
-test('egldevice',                  egldevice,                                                      env : egl_env)
-test('eglgetprocaddress',          eglgetprocaddress,                                              env : egl_env)
-test('eglmakecurrent',             eglmakecurrent,                                                 env : egl_env)
-test('eglerror',                   eglerror,                                                       env : egl_env)
-test('egldebug',                   egldebug,                                                       env : egl_env)
+
+if get_option('egl')
+  test('egldisplay',                 egldisplay,                                                     env : egl_env)
+  test('egldevice',                  egldevice,                                                      env : egl_env)
+  test('eglgetprocaddress',          eglgetprocaddress,                                              env : egl_env)
+  test('eglmakecurrent',             eglmakecurrent,                                                 env : egl_env)
+  test('eglerror',                   eglerror,                                                       env : egl_env)
+  test('egldebug',                   egldebug,                                                       env : egl_env)
+endif
