@@ -29,7 +29,10 @@ if get_option('egl')
   subdir('EGL')
 endif
 
-subdir('GLX')
-subdir('GL')
+if get_option('glx')
+  subdir('GLX')
+  subdir('GL')
+endif
+
 subdir('GLESv1')
 subdir('GLESv2')

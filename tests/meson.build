@@ -21,50 +21,52 @@ gldispatch = executable('testgldispatch', 'testgldispatch.c',
     link_with : [opengl, gldispatch, libpatchentrypoints],
 )
 
-glxcreatecontext_src = files('testglxcreatecontext.c', 'test_utils.c')
-glxcreatecontext = executable('testglxcreatecontext', glxcreatecontext_src,
-    include_directories : inc,
-    dependencies : [x11_dep, glvnd_pthread_dep, libdl],
-    link_with : [glx, opengl],
-)
+if get_option('glx')
+  glxcreatecontext_src = files('testglxcreatecontext.c', 'test_utils.c')
+  glxcreatecontext = executable('testglxcreatecontext', glxcreatecontext_src,
+      include_directories : inc,
+      dependencies : [x11_dep, glvnd_pthread_dep, libdl],
+      link_with : [glx, opengl],
+  )
 
-glxmakecurrent_src = files('testglxmakecurrent.c', 'test_utils.c')
-glxmakecurrent = executable('testglxmakecurrent', glxmakecurrent_src,
-    include_directories : inc,
-    dependencies : [x11_dep, glvnd_pthread_dep, libdl],
-    link_with : [glx, opengl],
-)
+  glxmakecurrent_src = files('testglxmakecurrent.c', 'test_utils.c')
+  glxmakecurrent = executable('testglxmakecurrent', glxmakecurrent_src,
+      include_directories : inc,
+      dependencies : [x11_dep, glvnd_pthread_dep, libdl],
+      link_with : [glx, opengl],
+  )
 
-glxmakecurrent_oldlink = executable('testglxmakecurrent_oldlink', glxmakecurrent_src,
-    include_directories : inc,
-    dependencies : [x11_dep, glvnd_pthread_dep, libdl],
-    link_with : gl,
-)
+  glxmakecurrent_oldlink = executable('testglxmakecurrent_oldlink', glxmakecurrent_src,
+      include_directories : inc,
+      dependencies : [x11_dep, glvnd_pthread_dep, libdl],
+      link_with : gl,
+  )
 
-glxgetprocaddress = executable('testglxgetprocaddress', 'testglxgetprocaddress.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : glx,
-)
+  glxgetprocaddress = executable('testglxgetprocaddress', 'testglxgetprocaddress.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : glx,
+  )
 
-glxgetclientstr = executable('testglxgetclientstr', 'testglxgetclientstr.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : glx,
-)
+  glxgetclientstr = executable('testglxgetclientstr', 'testglxgetclientstr.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : glx,
+  )
 
-glxqueryversion = executable('testglxqueryversion', 'testglxqueryversion.c',
-    include_directories : inc,
-    dependencies : x11_dep,
-    link_with : glx,
-)
+  glxqueryversion = executable('testglxqueryversion', 'testglxqueryversion.c',
+      include_directories : inc,
+      dependencies : x11_dep,
+      link_with : glx,
+  )
 
-patchentrypoints = executable('patchentrypoints',
-    ['testpatchentrypoints.c', 'test_utils.c'],
-    include_directories : inc,
-    dependencies : [x11_dep, libdl],
-    link_with: [glx, opengl],
-)
+  patchentrypoints = executable('patchentrypoints',
+      ['testpatchentrypoints.c', 'test_utils.c'],
+      include_directories : inc,
+      dependencies : [x11_dep, libdl],
+      link_with: [glx, opengl],
+  )
+endif
 
 if get_option('egl')
   egl_test_utils = static_library('egl_test_utils', 'egl_test_utils.c',
@@ -111,17 +113,20 @@ endif
 test('gldispatch_static',          gldispatch,               args : ['-s'],                        env : env)
 test('gldispatch_generated',       gldispatch,               args : ['-g'],                        env : env)
 test('gldispatch_patched',         gldispatch,               args : ['-s', '-g', '-p'],            env : env)
-test('glxcreatecontext',           glxcreatecontext,                                               env : glx_env)
-test('glxmcbasic',                 glxmakecurrent,           args : ['-t', '1', '-i', '1'],        env : glx_env)
-test('glxmcloop',                  glxmakecurrent,           args : ['-t', '1', '-i', '250'],      env : glx_env)
-test('glxmcthreads',               glxmakecurrent,           args : ['-t', '5', '-i', '20000'],    env : glx_threads)
-test('glxmclate',                  glxmakecurrent,           args : ['-t', '1', '-i', '1', '-l'],  env : glx_env)
-test('glxmcoldlink',               glxmakecurrent_oldlink,   args : ['-t', '1', '-i', '1'],        env : glx_env)
-test('glxgetprocaddress',          glxgetprocaddress,                                              env : glx_env)
-test('glxgetprocaddress_genentry', glxgetprocaddress,                                              env : glx_genentry)
-test('glxgetclientstr',            glxgetclientstr,                                                env : glx_env)
-test('glxqueryversion',            glxqueryversion,                                                env : glx_env)
-test('patchentrypoints',           patchentrypoints,                                               env : glx_patch)
+
+if get_option('glx')
+  test('glxcreatecontext',           glxcreatecontext,                                               env : glx_env)
+  test('glxmcbasic',                 glxmakecurrent,           args : ['-t', '1', '-i', '1'],        env : glx_env)
+  test('glxmcloop',                  glxmakecurrent,           args : ['-t', '1', '-i', '250'],      env : glx_env)
+  test('glxmcthreads',               glxmakecurrent,           args : ['-t', '5', '-i', '20000'],    env : glx_threads)
+  test('glxmclate',                  glxmakecurrent,           args : ['-t', '1', '-i', '1', '-l'],  env : glx_env)
+  test('glxmcoldlink',               glxmakecurrent_oldlink,   args : ['-t', '1', '-i', '1'],        env : glx_env)
+  test('glxgetprocaddress',          glxgetprocaddress,                                              env : glx_env)
+  test('glxgetprocaddress_genentry', glxgetprocaddress,                                              env : glx_genentry)
+  test('glxgetclientstr',            glxgetclientstr,                                                env : glx_env)
+  test('glxqueryversion',            glxqueryversion,                                                env : glx_env)
+  test('patchentrypoints',           patchentrypoints,                                               env : glx_patch)
+endif
 
 if get_option('egl')
   test('egldisplay',                 egldisplay,                                                     env : egl_env)
