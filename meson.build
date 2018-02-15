@@ -1,8 +1,8 @@
 project('libglvnd', 'c', meson_version : '>=0.41')
 
-glproto_dep = dependency('glproto', required : true)
-x11_dep = dependency('x11', required : true)
-xext_dep = dependency('xext', required : true)
+glproto_dep = dependency('glproto')
+x11_dep = dependency('x11')
+xext_dep = dependency('xext')
 
 inc = include_directories('include')
 
