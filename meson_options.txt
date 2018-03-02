@@ -1,3 +1,6 @@
 option('egl',  type : 'boolean', value : true, description : 'build support for EGL')
 option('glx',  type : 'boolean', value : true, description : 'build support for GLX')
 option('gles', type : 'boolean', value : true, description : 'build support for libGLES*.so libraries')
+
+option('asm',  type : 'boolean', value : true, description : 'assembly usage [on supported platforms]')
+option('tls',  type : 'boolean', value : true, description : 'TLS usage [on supported platforms]')

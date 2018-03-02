@@ -1,15 +1,38 @@
-entry_src = [
-    'entry_x86_64_tls.c',
-    'entry_simple_asm.c',
-    'entry_common.c',
-]
+entry_src = []
 
-glapi_src = entry_src + [
+pre_glapi_src = []
+
+if dispatch_entry_type == 'x86_tls'
+  entry_src += ['entry_x86_tls.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'x86_tsd'
+  entry_src += ['entry_x86_tsd.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'x86_64_tls'
+  entry_src += ['entry_x86_64_tls.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'x86_64_tsd'
+  entry_src += ['entry_x86_64_tsd.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'armv7_tsd'
+  entry_src += ['entry_armv7_tsd.c', 'entry_common.c']
+elif dispatch_entry_type == 'aarch64_tsd'
+  entry_src += ['entry_aarch64_tsd.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'ppc64le_tls'
+  entry_src += ['entry_ppc64le_tls.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'ppc64le_tsd'
+  entry_src += ['entry_ppc64le_tsd.c', 'entry_simple_asm.c', 'entry_common.c']
+elif dispatch_entry_type == 'pure_c'
+  entry_src += 'entry_pure_c.c'
+endif
+
+if use_tls
+  pre_glapi_src += 'u_current_tls.c'
+else
+  pre_glapi_src += 'u_current_tsd.c'
+endif
+
+glapi_src = entry_src + pre_glapi_src + [
     'mapi_glapi.c',
     'stub.c',
     'table.c',
     'u_execmem.c',
-    'u_current_tls.c',
 ]
 
 glapi = static_library('glapi',
