@@ -71,6 +71,7 @@ endif
 if get_option('egl')
   egl_test_utils = static_library('egl_test_utils', 'egl_test_utils.c',
       include_directories : inc,
+      dependencies : x11_dep,
   )
 
   egldisplay = executable('testegldisplay', 'testegldisplay.c',
