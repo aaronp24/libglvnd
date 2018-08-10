@@ -2,7 +2,7 @@ dnl configure.ac
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([libglvnd], [1.0.0], [kbrenneman@nvidia.com])
+AC_INIT([libglvnd], [1.1.0], [kbrenneman@nvidia.com])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
@@ -83,7 +83,7 @@ if test "x$enable_asm" = xyes; then
             ;;
         esac
         ;;
-    x86_64)
+    x86_64 | amd64)
         case "$host_os" in
         linux* | *freebsd* | dragonfly* | *netbsd*)
             asm_arch=x86_64
@@ -270,6 +270,9 @@ AS_IF([test "x$HAVE_SYNC_INTRINSICS" = "xyes"],
 
 AC_CHECK_FUNC(mincore, [AC_DEFINE([HAVE_MINCORE], [1],
     [Define to 1 if mincore is available.])])
+
+AC_CHECK_FUNC(dlopen, [],
+    [AC_SUBST([LIB_DL], [-ldl])])
 
 AC_MSG_CHECKING([for RTLD_NOLOAD])
 AC_COMPILE_IFELSE([AC_LANG_SOURCE([

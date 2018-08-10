@@ -34,7 +34,8 @@ noinst_HEADERS = egldispatchstubs.h \
 	libeglcurrent.h \
 	libeglmapping.h \
 	libeglvendor.h \
-	libeglerror.h
+	libeglerror.h \
+	g_egldispatchstubs.h
 
 lib_LTLIBRARIES = libEGL.la
 
@@ -56,7 +57,7 @@ libEGL_la_CFLAGS += \
 libEGL_la_CFLAGS += $(PTHREAD_CFLAGS)
 
 # Required libraries
-libEGL_la_LIBADD = -ldl
+libEGL_la_LIBADD = @LIB_DL@
 libEGL_la_LIBADD += -lm
 libEGL_la_LIBADD += $(GL_DISPATCH_DIR)/libGLdispatch.la
 libEGL_la_LIBADD += $(UTIL_DIR)/libtrace.la

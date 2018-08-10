@@ -39,9 +39,13 @@ libGLdispatch_la_CFLAGS += -I$(top_srcdir)/include
 
 libGLdispatch_la_LDFLAGS = -shared -version-info 0 $(LINKER_FLAG_NO_UNDEFINED)
 
-EXTRA_libGLdispatch_la_DEPENDENCIES = $(top_srcdir)/src/GLdispatch/export_list.sym
-libGLdispatch_la_LDFLAGS += \
-	-export-symbols $(top_srcdir)/src/GLdispatch/export_list.sym
+if GLDISPATCH_USE_TLS
+VERSION_SCRIPT=$(top_srcdir)/src/GLdispatch/export_list_tls.ver
+else
+VERSION_SCRIPT=$(top_srcdir)/src/GLdispatch/export_list_tsd.ver
+endif
+EXTRA_libGLdispatch_la_DEPENDENCIES = $(VERSION_SCRIPT)
+libGLdispatch_la_LDFLAGS += -Xlinker --version-script=$(VERSION_SCRIPT)
 
 libGLdispatch_la_SOURCES = \
 	GLdispatch.c
@@ -50,6 +54,6 @@ libGLdispatch_la_LIBADD = vnd-glapi/libglapi.la
 libGLdispatch_la_LIBADD += ../util/libtrace.la
 libGLdispatch_la_LIBADD += ../util/libglvnd_pthread.la
 libGLdispatch_la_LIBADD += ../util/libapp_error_check.la
-libGLdispatch_la_LIBADD += -ldl
+libGLdispatch_la_LIBADD += @LIB_DL@
 
-EXTRA_DIST = export_list.sym
+EXTRA_DIST = export_list_tls.ver export_list_tsd.ver

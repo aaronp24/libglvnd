@@ -68,40 +68,6 @@ libglglxwrapper_dep = declare_dependency(
     sources : libglglxwrapper_gen,
 )
 
-glapi_gen_libopengl_exports_script = find_program('gen_libOpenGL_exports.py')
-g_opengl_exports_sym = custom_target('g_opengl_exports.sym',
-    command : [glapi_gen_libopengl_exports_script, 'opengl', glapi_gen_gl_core_xml],
-    capture : true,
-    depend_files : files('genCommon.py', 'gen_libOpenGL_exports.py') + glapi_gen_gl_core_xml,
-    output : 'g_opengl_exports.sym',
-)
-g_opengl_exports_sym_dep = declare_dependency(
-    sources : g_opengl_exports_sym,
-    link_args : '-Wl,--version-script,@0@'.format(g_opengl_exports_sym.full_path()),
-)
-
-g_glesv1_exports_sym = custom_target('g_glesv1_exports.sym',
-    command : [glapi_gen_libopengl_exports_script, 'glesv1', glapi_gen_gl_xml],
-    capture : true,
-    depend_files : files('genCommon.py', 'gen_libOpenGL_exports.py') + glapi_gen_gl_xml,
-    output : 'g_glesv1_exports.sym',
-)
-g_glesv1_exports_sym_dep = declare_dependency(
-    sources : g_glesv1_exports_sym,
-    link_args : '-Wl,--version-script,@0@'.format(g_glesv1_exports_sym.full_path()),
-)
-
-g_glesv2_exports_sym = custom_target('g_glesv2_exports.sym',
-    command : [glapi_gen_libopengl_exports_script, 'glesv2', glapi_gen_gl_xml],
-    capture : true,
-    depend_files : files('genCommon.py', 'gen_libOpenGL_exports.py') + glapi_gen_gl_xml,
-    output : 'g_glesv2_exports.sym',
-)
-g_glesv2_exports_sym_dep = declare_dependency(
-    sources : g_glesv2_exports_sym,
-    link_args : '-Wl,--version-script,@0@'.format(g_glesv2_exports_sym.full_path()),
-)
-
 # EGL_dispatch_stubs
 # TODO: Move egldispatchstubs.h to here
 egl_inc = include_directories('../EGL')

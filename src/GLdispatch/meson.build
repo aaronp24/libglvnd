@@ -5,7 +5,11 @@ gldispatch_inc = include_directories([
     '.',
 ])
 
-gldispatch_linker_script = 'export_list.ver'
+if use_tls
+  gldispatch_linker_script = 'export_list_tls.ver'
+else
+  gldispatch_linker_script = 'export_list_tsd.ver'
+endif
 
 gldispatch = shared_library('GLdispatch', 'GLdispatch.c',
     include_directories : [inc, util_inc, gldispatch_inc],

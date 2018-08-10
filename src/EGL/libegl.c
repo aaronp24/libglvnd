@@ -142,8 +142,12 @@ static EGLBoolean _eglPointerIsDereferencable(void *p)
      * [addr, addr + length) is not mapped into the process, so all that needs
      * to be checked there is whether the mincore call succeeds or not, as it
      * can only succeed on dereferenceable memory ranges.
+     *
+     * Also note that the third parameter might be char or unsigned char
+     * depending on what system we're building on. Since we don't actually need
+     * that result, just cast it to a void* so that it works either way.
      */
-    return (mincore((void *) addr, page_size, &unused) >= 0);
+    return (mincore((void *) addr, page_size, (void *) &unused) >= 0);
 #else
     return EGL_FALSE;
 #endif
@@ -162,6 +166,10 @@ static EGLBoolean IsGbmDisplay(void *native_display)
     Dl_info info;
 
     if (dladdr(first_pointer, &info) == 0) {
+        return EGL_FALSE;
+    }
+
+    if (!info.dli_sname) {
         return EGL_FALSE;
     }
 
@@ -194,6 +202,10 @@ static EGLBoolean IsWaylandDisplay(void *native_display)
     Dl_info info;
 
     if (dladdr(first_pointer, &info) == 0) {
+        return EGL_FALSE;
+    }
+
+    if (!info.dli_sname) {
         return EGL_FALSE;
     }
 
@@ -642,6 +654,15 @@ PUBLIC EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,
 
     __eglEntrypointCommon();
 
+    // According to the EGL spec, the display handle must be valid, even if
+    // the context is NULL.
+    newDpy = __eglLookupDisplay(dpy);
+    if (newDpy == NULL) {
+        __eglReportError(EGL_BAD_DISPLAY, "eglMakeCurrent", NULL,
+                "Invalid display %p", dpy);
+        return EGL_FALSE;
+    }
+
     if (context == EGL_NO_CONTEXT && (draw != EGL_NO_SURFACE || read != EGL_NO_SURFACE)) {
         __eglReportError(EGL_BAD_MATCH, "eglMakeCurrent", NULL,
                 "Got an EGLSurface but no EGLContext");
@@ -691,15 +712,8 @@ PUBLIC EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,
     }
 
     if (context != EGL_NO_CONTEXT) {
-        newDpy = __eglLookupDisplay(dpy);
-        if (newDpy == NULL) {
-            __eglReportError(EGL_BAD_DISPLAY, "eglMakeCurrent", NULL,
-                    "Invalid display %p", dpy);
-            return EGL_FALSE;
-        }
         newVendor = newDpy->vendor;
     } else {
-        newDpy = NULL;
         newVendor = NULL;
     }
 
