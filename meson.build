@@ -15,7 +15,7 @@ subdir('tests')
 
 import('pkgconfig').generate(
     name : 'libglvnd',
-    version : '1.1.0',
+    version : '1.1.1',
     description : 'Vendor-neutral OpenGL dispatch library vendor interface',
     variables : [
         'datarootdir=${prefix}/@0@'.format(datadir),

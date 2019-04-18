@@ -86,6 +86,7 @@ libEGL_dispatch_stubs_la_SOURCES = \
 	egldispatchstubs.c \
 	g_egldispatchstubs.c
 
+if HAVE_PYTHON
 BUILT_SOURCES = g_egldispatchstubs.c g_egldispatchstubs.h
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -100,7 +101,8 @@ GENERATE_DEPS = \
 	$(GENERATE_LIST_FILES)
 
 g_egldispatchstubs.c : $(GENERATE_DEPS)
-	$(VM_V_GEN)$(PYTHON2) $(GENERATE_DISPATCH_SCRIPT) source $(GENERATE_LIST_FILES) > $@
+	$(AM_V_GEN)$(PYTHON) $(GENERATE_DISPATCH_SCRIPT) source $(GENERATE_LIST_FILES) > $@
 
 g_egldispatchstubs.h : $(GENERATE_DEPS)
-	$(VM_V_GEN)$(PYTHON2) $(GENERATE_DISPATCH_SCRIPT) header $(GENERATE_LIST_FILES) > $@
+	$(AM_V_GEN)$(PYTHON) $(GENERATE_DISPATCH_SCRIPT) header $(GENERATE_LIST_FILES) > $@
+endif

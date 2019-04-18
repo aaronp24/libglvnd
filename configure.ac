@@ -2,7 +2,7 @@ dnl configure.ac
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([libglvnd], [1.1.0], [kbrenneman@nvidia.com])
+AC_INIT([libglvnd], [1.1.1], [kbrenneman@nvidia.com])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
@@ -27,7 +27,15 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 AC_PROG_MKDIR_P
-AC_CHECK_PROGS([PYTHON2], [python2.7 python2 python])
+
+# The tarball from "make dist" already contains all of the generated files. If
+# we're building from that, then we won't need Python.
+if test -e "$srcdir/src/GLdispatch/vnd-glapi/g_glapi_mapi_gl_tmp.h" ; then
+    AM_PATH_PYTHON([2.7],, [:])
+else
+    AM_PATH_PYTHON([2.7])
+fi
+AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 
 if test "x$ac_cv_prog_cc_c99" = xno; then
         AC_MSG_ERROR([Building libglvnd requires a C99-enabled compiler])

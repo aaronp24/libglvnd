@@ -16,9 +16,12 @@ glx_patch = glx_env + ['GLVND_TEST_PATCH_ENTRYPOINTS=1']
 glx_threads = glx_env + ['LD_PRELOAD=libpthread.so.0']
 egl_env = env + ['__EGL_VENDOR_LIBRARY_DIRS=@0@/json'.format(meson.current_source_dir())]
 
+thread_dep = dependency('threads')
+
 gldispatch = executable('testgldispatch', 'testgldispatch.c',
     include_directories : [inc, gldispatch_inc],
     link_with : [opengl, gldispatch, libpatchentrypoints],
+    dependencies : [thread_dep],
 )
 
 if get_option('glx')
@@ -112,8 +115,11 @@ if get_option('egl')
 endif
 
 test('gldispatch_static',          gldispatch,               args : ['-s'],                        env : env)
+test('gldispatch_static_thr',      gldispatch,               args : ['-s', '-t'],                  env : env)
 test('gldispatch_generated',       gldispatch,               args : ['-g'],                        env : env)
+test('gldispatch_generated_thr',   gldispatch,               args : ['-g', '-t'],                  env : env)
 test('gldispatch_patched',         gldispatch,               args : ['-s', '-g', '-p'],            env : env)
+test('gldispatch_patched_thr',     gldispatch,               args : ['-s', '-g', '-p', '-t'],      env : env)
 
 if get_option('glx')
   test('glxcreatecontext',           glxcreatecontext,                                               env : glx_env)
